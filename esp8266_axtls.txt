@@ -1,0 +1,16 @@
+ESP8266 AXTLS
+TLS protocol: TLS 1.2
+Rating: Improvable
+Ephemeral keys supported: 0
+Session ticket supported: 0
+TLS compression supported: 0
+Unknown cipher suite supported: 0
+Beast vuln: 0
+Able to detect n minus one splitting: 0
+
+Cipher Suites:
+	TLS_RSA_WITH_AES_128_CBC_SHA256
+	TLS_RSA_WITH_AES_256_CBC_SHA256
+	TLS_RSA_WITH_AES_256_CBC_SHA
+	TLS_RSA_WITH_AES_128_CBC_SHA
+

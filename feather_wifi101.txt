@@ -1,0 +1,23 @@
+Adafruit Feather M0 ATWINC1500
+WiFi101
+TLS protocol: TLS 1.2
+Rating: Probably Okay
+Ephemeral keys supported: 1
+Session ticket supported: 0
+TLS compression supported: 0
+Unknown cipher suite supported: 0
+Beast vuln: 0
+Able to detect n minus one splitting: 0
+
+Cipher Suites:
+	TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+	TLS_RSA_WITH_AES_128_GCM_SHA256
+	TLS_DHE_RSA_WITH_AES_256_CBC_SHA256
+	TLS_DHE_RSA_WITH_AES_128_CBC_SHA256
+	TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+	TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+	TLS_RSA_WITH_AES_256_CBC_SHA256
+	TLS_RSA_WITH_AES_128_CBC_SHA256
+	TLS_RSA_WITH_AES_256_CBC_SHA
+	TLS_RSA_WITH_AES_128_CBC_SHA
+
