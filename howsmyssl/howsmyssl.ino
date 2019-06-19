@@ -11,7 +11,7 @@
  */
 
 // This board is similar to the MKR WiFi 1000.
-#define ADAFRUIT_FEATHER_ATWINC1500
+//#define ADAFRUIT_FEATHER_ATWINC1500
 
 #include <time.h>
 
