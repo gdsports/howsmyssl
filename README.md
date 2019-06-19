@@ -47,3 +47,9 @@ The root CA certificate is included in the source code for the ESP32 and
 ESP8266.  The root CA certificate for the WiFi1010 (WiFiNINA) and ATWINC1500
 (WiFi101)and must be loaded using the WiFi101/WiFiNINA Firmware/Certificates
 Updater.
+
+## Library Dependencies
+
+All can be installed using the IDE library manager.
+
+ArduinoJson, WiFiNINA, WiFi101

@@ -25,8 +25,10 @@ arduino --install-boards "arduino:samd"
 BOARD="arduino:samd:mkrwifi1010"
 arduino --board "${BOARD}" --save-prefs
 CC="arduino --verify --board ${BOARD}"
+cd ${WORKDIR}
+git clone https://github.com/gdsports/howsmyssl
 cd ${IDEDIR}/portable/sketchbook
-ln -s ~/Sync/howsmyssl/howsmyssl .
+ln -s ${WORKDIR}/howsmyssl/howsmyssl .
 $CC howsmyssl/howsmyssl.ino >/tmp/samd21_$$.txt 2>&1
 # ESP32
 arduino --pref "boardsmanager.additional.urls=https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs
