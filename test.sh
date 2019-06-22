@@ -32,14 +32,15 @@ if [ -d ~/Sync ]
 then
 ln -s ~/Sync/howsmyssl/howsmyssl .
 ln -s ~/Sync/howsmyssl/weathergov .
+ln -s ~/Sync/howsmyssl/randomfox .
 else
 cd ${WORKDIR}
 git clone https://github.com/gdsports/howsmyssl
 ln -s ${WORKDIR}/howsmyssl/howsmyssl .
 ln -s ${WORKDIR}/howsmyssl/weathergov .
+ln -s ${WORKDIR}/howsmyssl/randomfox .
 fi
 (find -L . -name '*.ino' -print0 | grep -z -v libraries | xargs -0 -n 1 $CC >/tmp/m0_$$.txt 2>&1) &
-$CC howsmyssl/howsmyssl.ino >/tmp/samd21_$$.txt 2>&1
 # ESP32
 arduino --install-boards "esp32:esp32"
 BOARD="esp32:esp32:pico32"
