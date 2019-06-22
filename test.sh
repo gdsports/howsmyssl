@@ -20,24 +20,32 @@ cd ${IDEDIR}
 which arduino
 arduino --install-library "WiFiNINA"
 arduino --install-library "ArduinoJson"
+arduino --install-library "WiFi101"
 arduino --pref "compiler.warning_level=default" --save-prefs
+arduino --pref "boardsmanager.additional.urls=https://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json,https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" --save-prefs
 arduino --install-boards "arduino:samd"
 BOARD="arduino:samd:mkrwifi1010"
 arduino --board "${BOARD}" --save-prefs
 CC="arduino --verify --board ${BOARD}"
+cd ${IDEDIR}/portable/sketchbook
+if [ -d ~/Sync ]
+then
+ln -s ~/Sync/howsmyssl/howsmyssl .
+ln -s ~/Sync/howsmyssl/weathergov .
+else
 cd ${WORKDIR}
 git clone https://github.com/gdsports/howsmyssl
-cd ${IDEDIR}/portable/sketchbook
 ln -s ${WORKDIR}/howsmyssl/howsmyssl .
+ln -s ${WORKDIR}/howsmyssl/weathergov .
+fi
+(find -L . -name '*.ino' -print0 | grep -z -v libraries | xargs -0 -n 1 $CC >/tmp/m0_$$.txt 2>&1) &
 $CC howsmyssl/howsmyssl.ino >/tmp/samd21_$$.txt 2>&1
 # ESP32
-arduino --pref "boardsmanager.additional.urls=https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs
 arduino --install-boards "esp32:esp32"
 BOARD="esp32:esp32:pico32"
 CC="arduino --verify --board ${BOARD}"
-$CC howsmyssl/howsmyssl.ino >/tmp/esp32_$$.txt 2>&1
+(find -L . -name '*.ino' -print0 | grep -z -v libraries | xargs -0 -n 1 $CC >/tmp/esp32_$$.txt 2>&1) &
 # ESP8266
-arduino --pref "boardsmanager.additional.urls=https://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs
 arduino --install-boards "esp8266:esp8266"
 arduino --pref "custom_CpuFrequency=huzzah_160" \
 		--pref "custom_UploadSpeed=huzzah_921600" \
@@ -53,11 +61,9 @@ arduino --pref "custom_CpuFrequency=huzzah_160" \
 		--pref "custom_xtal=huzzah_160"  --save-prefs
 BOARD="esp8266:esp8266:huzzah"
 CC="arduino --verify --board ${BOARD}"
-$CC howsmyssl/howsmyssl.ino >/tmp/esp8266_$$.txt 2>&1
+(find -L . -name '*.ino' -print0 | grep -z -v libraries | xargs -0 -n 1 $CC >/tmp/esp8266_$$.txt 2>&1) &
 # Adafruit Feather M0 atwinc1500
-arduino --pref "boardsmanager.additional.urls=https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" --save-prefs
 arduino --install-boards "adafruit:samd"
-arduino --install-library "WiFi101"
 BOARD="adafruit:samd:adafruit_feather_m0"
 CC="arduino --verify --board ${BOARD}"
-$CC howsmyssl/howsmyssl.ino >/tmp/atwinc1500_$$.txt 2>&1
+(find -L . -name '*.ino' -print0 | grep -z -v libraries | xargs -0 -n 1 $CC >/tmp/atwinc1500_$$.txt 2>&1) &

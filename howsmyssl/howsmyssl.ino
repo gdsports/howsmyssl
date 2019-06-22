@@ -3,17 +3,21 @@
  *  $ curl https://www.howsmyssl.com/a/check
  *
  * For Arduino boards ESP32, ESP8266 (AXTLS), ESP8266 (BearSSL),
- * and MKR WiFi 1010.
+ * MKR WiFi 1010, and Adafruit Feather M0 with ATWINC15000.
  *
  * BearSSL is much better than AXTLS and it is the default for ESP8266.
  * ESP32, BearSSL, and WiFiNINA (ESP32 inside) all have the "Probably OK" rating.
  * AXTLS has the rating "Improvable".
  */
 
-// This board is similar to the MKR WiFi 1000.
-//#define ADAFRUIT_FEATHER_ATWINC1500
-
 #include <time.h>
+#include <ArduinoJson.h>
+
+#if defined(ADAFRUIT_FEATHER_M0)
+// This board is similar to the MKR WiFi 1000. Let's assume if the
+// board type is Adafruit Feather M0, it has the ATWINC1500 WiFi module.
+#define ADAFRUIT_FEATHER_ATWINC1500
+#endif
 
 #if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_SAMD_NANO_33_IOT)
 #include <SPI.h>
@@ -38,12 +42,11 @@ using namespace axTLS;
 #elif !defined(WIFININA) && !defined(WIFI101)
 #include <WiFiClientSecure.h>
 #endif
-#include <ArduinoJson.h>
 
 const char ssid[]     = "SSID";
 const char password[] = "PASSWORD";
-const char server[]   = "www.howsmyssl.com";
-const char url_path[] = "/a/check";
+#define server          "www.howsmyssl.com"
+#define url_path        "/a/check"
 #define JSON_BUFFER 8192
 
 #if defined(ESP8266)
@@ -227,9 +230,9 @@ WiFiSSLClient client;
     }
 #endif
 
-    client.print(String("GET ") + url_path + " HTTP/1.1\r\n" +
-               "Host: " + server + "\r\n" +
-               "User-Agent: arduino/1.0.0\r\n" +
+    client.print("GET " url_path " HTTP/1.1\r\n" \
+               "Host: " server "\r\n" \
+               "User-Agent: arduino/1.0.0\r\n" \
                "Connection: close\r\n\r\n");
 
     Serial.println("request sent");
