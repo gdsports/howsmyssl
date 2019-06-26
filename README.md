@@ -22,6 +22,7 @@ esp32| TLS 1.2| Probably Okay| 1| 1| 0| 0| 0| 0
 esp8266_bearssl| TLS 1.2| Probably Okay| 1| 0| 0| 0| 0| 0
 esp8266_bearssl_basic| TLS 1.2| Improvable| 0| 0| 0| 0| 0| 0
 esp8266_axtls| TLS 1.2| Improvable| 0| 0| 0| 0| 0| 0
+due_airlift| TLS 1.2| Probably Okay| 1| 1| 0| 0| 0| 0
 
 MKR WiFi1010 uses an ESP32 running WiFiNINA firmware so it is not surprising to
 see it has similar TLS characteristics as an ESP32 Arduino. One difference is
@@ -43,10 +44,16 @@ The source code howsmyssl.ino handles all TLS stacks but at the cost of a lot
 of #if conditionals. All cases use root CA certificate authentication. SHA1
 fingerprint authentication is not safe and requires frequent updates.
 
+The Adafruit Airlift shield (ESP32 running WiFiNINA firmware) works fine on an
+Arduino Due. It has the same rating and cipher suites as the MKR WiFi 1010. The
+limited RAM on Uno and Mega limit the usefulness shield but I can confirm it
+works on Mega 2560.
+
 The root CA certificate is included in the source code for the ESP32 and
-ESP8266.  The root CA certificate for the WiFi1010 (WiFiNINA) and ATWINC1500
+ESP8266. The root CA certificate for the WiFi1010 (WiFiNINA) and ATWINC1500
 (WiFi101)and must be loaded using the WiFi101/WiFiNINA Firmware/Certificates
-Updater.
+Updater. The Adafruit Airlift has pre-loaded root certs that work for the
+three examples.
 
 ## Library Dependencies
 

@@ -23,16 +23,36 @@
 #include <SPI.h>
 #include <WiFiNINA.h>
 #define WIFININA
+#define NO_WIFI_HARDWARE WL_NO_MODULE
+#define WIFI_HARDWARE "WiFiNINA"
+
 #elif defined(ADAFRUIT_FEATHER_ATWINC1500)
 #include <SPI.h>
 #include <WiFi101.h>
 #define WIFI101
+#define NO_WIFI_HARDWARE WL_NO_SHIELD
+#define WIFI_HARDWARE "WiFi101"
+
 #elif defined(ESP8266)
 // In ESP8266 <= 2.4.2 do not define either of the following.
 // In ESP8266 >= 2.5 define one or the other but not both.
 //#define USING_AXTLS
 #define USING_BEARSSL
 #include <ESP8266WiFi.h>
+
+#elif defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_SAM_DUE)
+// Assume Adafruit Airlift shield
+  #define SPIWIFI       SPI  // The SPI port
+  #define SPIWIFI_SS    10   // Chip select pin
+  #define ESP32_RESETN   5   // Reset pin
+  #define SPIWIFI_ACK    7   // a.k.a BUSY or READY pin
+  #define ESP32_GPIO0   -1
+#include <SPI.h>
+#include <WiFiNINA.h>
+#define WIFININA
+#define NO_WIFI_HARDWARE WL_NO_MODULE
+#define WIFI_HARDWARE "WiFiNINA"
+
 #endif
 
 #if defined(ESP8266) && defined(USING_AXTLS)
@@ -47,6 +67,9 @@ const char ssid[]     = "SSID";
 const char password[] = "PASSWORD";
 #define server "api.weather.gov"
 #define url_path "/gridpoints/MLB/19,61/forecast"
+#if defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560)
+#error Uno and Mega does not have eough RAM for this.
+#endif
 #define JSON_BUFFER 16000
 
 #if defined(ESP8266)
@@ -339,28 +362,19 @@ void setup() {
   Serial.print("TLS Stack:");
   Serial.println(TLS_STACK);
 
-#if defined(WIFININA)
-  // check for the WiFi module:
-  if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFiNINA module failed!");
-    // don't continue
-    while (true);
-  }
-#elif defined(WIFI101)
-  // check for the WiFi module:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("Communication with WiFi101 module failed!");
-    // don't continue
-    while (true);
-  }
-#endif
-
 #if defined(WIFININA) || defined(WIFI101)
+  // check for the WiFi module:
+  if (WiFi.status() == NO_WIFI_HARDWARE) {
+    Serial.println(F("Communication with " WIFI_HARDWARE " module failed!"));
+    // don't continue
+    while (true);
+  }
+
   String fv = WiFi.firmwareVersion();
-  Serial.print("WiFiNINA/WiFi101 f/w version: ");
+  Serial.print(F(WIFI_HARDWARE " f/w version: "));
   Serial.println(fv);
   if (fv < "1.0.0") {
-    Serial.println("Please upgrade the firmware");
+    Serial.println(F("Please upgrade the firmware"));
   }
 #endif
 
